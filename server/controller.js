@@ -16,11 +16,12 @@ module.exports = {
     },
 
     addHouse: (req, res) => {
-        const { name, address, city, propertystate, zipcode, img, mortgage, rent } = req.body
-        console.log('req.body', name, address, city, propertystate, zipcode, img, mortgage, rent)
+        let { name, address, city, state, zip, image, mortgage,rent } = req.body
+        
         const db = req.app.get('db');
-        db.add_new_property(name, address, city, propertystate, zipcode, img, mortgage, rent).then(() => {
-            res.sendStatus(200)
+        db.add_new_property([name, address, city, state, zip,image,mortgage,rent])
+        .then((res) => {
+            res.status(200).send(res)
         }).catch(err => {
             res.status(500).send('was not able to add')
             console.log(err)
@@ -29,11 +30,11 @@ module.exports = {
 
     deleteProperty: (req, res) => {
         const db = req.app.get('db');
-        const { params } = req;
-        db.delete_property(params.id).then(() => {
+        const {id} = req.params;
+        db.delete_property(id).then(() => {
             res.sendStatus(200)
         }).catch((err) => {
-            res.status(500).send({ errorMessage: "Oops! Something went wrong on our end." })
+            res.status(500).send({ errorMessage: "could not delete" })
             console.log(err)
         })
     }

@@ -44,12 +44,14 @@ class Dashboard extends Component {
         <House
           key={val.id}
           id={val.id}
-          // image= {val.image}
+          image= {val.image}
           name={val.name}
           address={val.address}
           city={val.city}
           propertystate={val.state}
-          zipcode={val.zip}
+          zip={val.zip}
+          mortgage = {val.mortgage}
+          rent = {val.rent}
           deleteHouse = {this.deleteHouse}
         />
       </div>
@@ -59,7 +61,7 @@ class Dashboard extends Component {
       <div>
         <div className="houses-container">{houses}</div>
         <button>
-          <Link to="/wizard">Add New Property</Link>
+          <Link to="/wizard/step1">Add New Property</Link>
         </button>
       </div>
     );

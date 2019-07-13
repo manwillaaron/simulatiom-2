@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import axios from "axios";
 import StepOne from './StepOne'
 import StepTwo from './StepTwo'
@@ -14,53 +14,61 @@ class Wizard extends Component {
       address: "",
       city: "",
       state: "",
-      zipcode: ""
+      zipcode: "",
+      image:"",
+      mortgage: '',
+      rent: ''
     };
     // this.handleChange=this.handleChange(this)
+  
   }
 
 
-  clearInputs() {
-    this.setState({
-        name: '',
-        address: '',
-        city: '',
-        state: '',
-        zipcode: ''
-    })
-}
 
-  addHouse() {
+  addHouse = () => {
+       
     axios.post("/api/property", {
       name: this.state.name,
       address: this.state.address,
       city: this.state.city,
       state: this.state.state,
-      zipcode: this.state.zipcode
+      zip: this.state.zipcode,
+      image: this.state.image,
+      mortgage:this.state.mortgage,
+      rent: this.state.rent
     })
+    
     // .then(()=> this.clearInputs())
   }
 
-  handleChange = e => {
-    let { name, value } = e.target;
-    this.setState({ [name]: value });
-    console.log(value);
-  };
+
+
+
+ 
 
   render() {
-      const{name,address,city,state,zipcode} = this.state
+      const{name,address,city,state,zip,image,rent,mortgage} = this.state
+      console.log(this.state)
     return (
       <div>
-   
+       <Switch>
           
-               <Route path='/wizard/step1' render={props => {
+               <Route path='/wizard/step1' 
+               render={props => {
             return (
               <StepOne {...props} 
               name= {name}
               address= {address}
               city= {city}
               state= {state}
-              zipcode= {zipcode}>
+              zipcode= {zip}
+              image = {image}
+              mortgage= {mortgage}
+              rent={rent}
+             
+            
+              
+              >
               </StepOne>
             );
           }}/>
@@ -71,7 +79,12 @@ class Wizard extends Component {
               address= {address}
               city= {city}
               state= {state}
-              zipcode= {zipcode}>
+              zipcode= {zip}
+              handleChange = {this.handleChange}
+              image = {image}
+              mortgage= {mortgage}
+              rent={rent}
+              >
               </StepTwo>
                );
             }}/>
@@ -83,12 +96,19 @@ class Wizard extends Component {
               address= {address}
               city= {city}
               state= {state}
-              zipcode= {zipcode}>
+              zipcode= {zip}
+              image = {image}
+              mortgage= {mortgage}
+                rent = {rent}
+                addHouse={this.addHouse}
+           
+              >
               </StepThree>
                );
             }}/>
+           
 
-        <button onClick={() => this.addHouse()}><Link to='/'>Complete</Link></button>
+           </Switch>
       </div>
     );
   }
